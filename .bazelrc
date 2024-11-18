@@ -21,13 +21,13 @@ build --stamp
 build:host --platforms=@local_config_platform//:host
 build:host --linkopt=-lrt
 
-build:target --platforms=@com_github_mjbots_rules_mbed//:stm32g4
+build:target --platforms=@com_github_BorisYakuboff_rules_mbed//:stm32g4
 
 # The following are used to work around
 # https://github.com/bazelbuild/bazel/issues/12036 as there is
 # otherwise no way to get the bazel-out directory to be different
 # across platforms.
-build:target --crosstool_top=@com_github_mjbots_rules_mbed//tools/cc_toolchain:toolchain
+build:target --crosstool_top=@com_github_BorisYakuboff_rules_mbed//tools/cc_toolchain:toolchain
 build:target --cpu=stm32g4
 
 

@@ -20,6 +20,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import platform
+import requests
 
 SCRIPT_PATH = os.path.basename(__file__)
 
@@ -67,23 +69,42 @@ BAZEL_BIN_CACHE = os.path.expanduser('~/.cache/bazel')
 BAZEL_VERSION = get_workspace_var('BAZEL_VERSION')
 BAZEL_VERSION_SHA = get_workspace_var('BAZEL_VERSION_SHA')
 
+def bazel_platform():
+    platform = platform.system.lower()
+    machine = platform.machine().lower()
+    if platform.startswith('linux'):
+        return sysconfig.get_platform()
+    if platform.startswith('darwin'):
+        return 'darwin-'+machine
+    depth,arch = platform.architecture()
+    if arch.startswith('Windows'):
+        if depth.startswith("64"):
+            return 'windows-x86_64.exe'
+    raise RuntimeError(f'platform {platform} {machine} not supported')
+
+def bazel_url():
+    return f'{BAZEL_REMOTE_SOURCE}/{BAZEL_VERSION}/bazel-{BAZEL_VERSION}-{bazel_platform()}'
 
 def download_bazel(dest):
     dist_tempfile = tempfile.NamedTemporaryFile(prefix='bazeldl-', delete=False)
 
-    url = '{}/{}/bazel-{}-linux-x86_64'.format(
-        BAZEL_REMOTE_SOURCE, BAZEL_VERSION, BAZEL_VERSION)
+    url = bazel_url()
+    url_sha256 = url+'.sha256'
 
     print('Downloading bazel {} from {}'.format(
         BAZEL_VERSION, url),
           file=sys.stderr, flush=True)
 
+    response = requests.get(url_sha256)
+    if response.status_code != 200:
+        raise RuntimeError('failed download sha256')
+    loaded_sha256 = response.text
     subprocess.check_call(['curl', '-L', url, '-o', dist_tempfile.name])
 
     actual_sha256 = subprocess.check_output([
         'sha256sum', dist_tempfile.name]).decode('utf-8').split(' ')[0]
 
-    if actual_sha256 != BAZEL_VERSION_SHA.lower():
+    if actual_sha256 != loaded_sha256.lower():
         raise RuntimeError(
             'bazel sha256 does not match, expected {} got {}'.format(
                 BAZEL_VERSION_SHA, actual_sha256))

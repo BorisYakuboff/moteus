@@ -55,8 +55,10 @@ llvm_register_toolchains()
 
 
 # Now rules_mbed
-load("@com_github_mjbots_rules_mbed//:rules.bzl", mbed_register = "mbed_register")
-load("@com_github_mjbots_rules_mbed//tools/workspace/mbed:repository.bzl", "mbed_repository")
+#load("@com_github_mjbots_rules_mbed//:rules.bzl", mbed_register = "mbed_register")
+#load("@com_github_mjbots_rules_mbed//tools/workspace/mbed:repository.bzl", "mbed_repository")
+load("@com_github_BorisYakuboff_rules_mbed//:rules.bzl", mbed_register = "mbed_register")
+load("@com_github_BorisYakuboff_rules_mbed//tools/workspace/mbed:repository.bzl", "mbed_repository")
 
 mbed_register(
     config = {

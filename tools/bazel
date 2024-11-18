@@ -68,11 +68,11 @@ BAZEL_BIN_CACHE = os.path.expanduser('~/.cache/bazel')
 BAZEL_VERSION = get_workspace_var('BAZEL_VERSION')
 
 def bazel_platform():
-    platform = platform.system.lower()
+    platform_string = platform.system.lower()
     machine = platform.machine().lower()
-    if platform.startswith('linux'):
+    if platform_string.startswith('linux'):
         return sysconfig.get_platform()
-    if platform.startswith('darwin'):
+    if platform_string.startswith('darwin'):
         return 'darwin-'+machine
     depth,arch = platform.architecture()
     if arch.startswith('Windows'):

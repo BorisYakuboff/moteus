@@ -39,9 +39,11 @@ llvm_toolchain(
     llvm_version = "10.0.0",
     urls = {
         "windows" : ["https://github.com/mjbots/bazel-toolchain/releases/download/0.5.6-mj20201011/LLVM-10.0.0-win64.tar.xz"],
+        "macos_x86_64": ["https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.0/clang+llvm-10.0.0-x86_64-apple-darwin.tar.xz"],
     },
     sha256 = {
         "windows" : "2851441d3993c032f98124a05e2aeb43010b7a85f0f7441103d36ae8d00afc18",
+        "macos_x86_64": "633a833396bf2276094c126b072d52b59aca6249e7ce8eae14c728016edb5e61",
     },
     strip_prefix = {
         "windows" : "LLVM",

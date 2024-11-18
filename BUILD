@@ -16,6 +16,14 @@
 
 package(default_visibility = ["//visibility:public"])
 
+platform(
+    name = "macos_x86_64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:macos",
+    ],
+)
+
 test_suite(
     name = "host",
     tests = [

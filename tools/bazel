@@ -21,7 +21,6 @@ import subprocess
 import sys
 import tempfile
 import platform
-import requests
 
 SCRIPT_PATH = os.path.basename(__file__)
 
@@ -87,6 +86,7 @@ def bazel_url():
 
 def download_bazel(dest):
     dist_tempfile = tempfile.NamedTemporaryFile(prefix='bazeldl-', delete=False)
+    dist_sha256_tempfile = tempfile.NamedTemporaryFile(prefix='bazeldl-sha256-', delete=False)
 
     url = bazel_url()
     url_sha256 = url+'.sha256'
@@ -95,10 +95,10 @@ def download_bazel(dest):
         BAZEL_VERSION, url),
           file=sys.stderr, flush=True)
 
-    response = requests.get(url_sha256)
-    if response.status_code != 200:
-        raise RuntimeError('failed download sha256')
-    loaded_sha256 = response.text
+    subprocess.check_call(['curl', '-L', url, '-o', dist_sha256_tempfile.name])
+    with open(dist_sha256_tempfile.name, 'r') as file:
+        loaded_sha256 = file.read().rstrip()
+
     subprocess.check_call(['curl', '-L', url, '-o', dist_tempfile.name])
 
     actual_sha256 = subprocess.check_output([

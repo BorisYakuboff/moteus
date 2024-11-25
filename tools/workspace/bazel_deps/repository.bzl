@@ -19,7 +19,7 @@ load("//tools/workspace:github_archive.bzl", "github_archive")
 def bazel_deps_repository(name):
     github_archive(
         name = name,
-        repo = "mjbots/bazel_deps",
+        repo = "BorisYakuboff/bazel_deps",
         commit = "c1c112d26ad879b8ddf79939029ec209a905d455",
         sha256 = "d376e3b76ceace38280c81f7c787a68ccc09437b6024dd31238a90cc3c3b4203",
     )

@@ -18,8 +18,8 @@ load("//tools/workspace:github_archive.bzl", "github_archive")
 
 def rules_mbed_repository():
     github_archive(
-        name = "com_github_BorisYakuboff_rules_mbed",
-        repo = "mjbots/rules_mbed",
+        name = "com_github_mjbots_rules_mbed",
+        repo = "BorisYakuboff/rules_mbed",
         commit = "6a276d2ad4e2fe8a81438af4854d8d09d31b980b",
         sha256 = "ef880dc1e8069aed2413b2761274e2b462cedb184d7740798a5b7a5adacc7217",
     )
